@@ -1,0 +1,13 @@
+.inventory-item {
+    color: white;
+}
+
+.product-list inventory > img {
+    width: auto;
+    height: auto;
+    max-width: 200px;
+}
+
+.product-button {
+    background-color: #3ad886
+}
