@@ -2,15 +2,13 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const massive = require('massive');
-const controller = require('./controller.js');
+const controller = require('./server/controller.js');
 const app = express();
 
 
-require('dotenv').config({
-    path: __dirname + '/../.env',
-})
+require('dotenv').config()
 
-massive( process.env.CONNECTION_STRING, {scripts:__dirname+'/../db'})
+massive( process.env.CONNECTION_STRING)
     .then(db => {
         console.log('connected to db')
         app.set('db', db)
@@ -24,11 +22,14 @@ app.use(bodyParser.json());
 // app.use(express.static(__dirname + /../build))
 
 
-app.get('/api/inventory', controller.get_inventory)
+app.get('/api/products', controller.get_inventory)
 
 app.post('/api/products', controller.create_product)
 
-// app.patch('/api/products')
+app.get('/api/products/:id', controller.get_product)
+
+
+app.put('/api/products/:id', controller.edit_product)
 
 app.delete('/api/products/:id', controller.delete_product)
 

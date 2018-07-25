@@ -7,14 +7,14 @@ const Product = (props) => {
     //     inventoryList: [],
     // }
 
-
     return(
         <div className="product-list inventory">
                 <img src={props.product_url} />
                 <br />{props.product_name}
                 <br />{props.product_price}
-                <div class="buttons">
+                <div className="buttons">
                     <button className="product-button" onClick={() => props.deleteProduct(props.id)}>Delete</button>
+                    <button className="product-button" onClick={() => props.editItem(props.id)}>Edit</button>
                 </div>
         </div>
     )

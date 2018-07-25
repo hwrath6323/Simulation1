@@ -11,27 +11,13 @@ class Dashboard extends Component {
 
         this.state = {
             inventoryList: props.inventoryList,
-                //     url: 'https://ae01.alicdn.com/kf/HTB1ARxPHVXXXXcLXpXXq6xXFXXX9/Devil-May-Cry-V-Cosplay-Dante-Ebony-Ivory.jpg',
-                //     name: 'Ebony & Ivory',
-                //     price: '$50,000,000,000'
-                // },
-                // {
-                //     url: 'https://vignette.wikia.nocookie.net/devilmaycry/images/f/fe/BlueRose.jpg/revision/latest?cb=20080424220315',
-                //     name: 'Blue Rose',
-                //     price: '$5,000,000',
-                // },
-                // {
-                //     url: 'https://vignette.wikia.nocookie.net/devilmaycry/images/2/2b/Untitledrebellion.png/revision/latest?cb=20131029230616',
-                //     name: 'Rebellion',
-                //     price: '$100,000,000,000'
                 
             getProducts: props.getProducts
         }
 
         this.deleteProduct = this.deleteProduct.bind(this)
 
-
-
+        // this.selectItem = this.selectItem.bind(this)
 
     }
         
@@ -48,9 +34,7 @@ class Dashboard extends Component {
             })
     }
 
-    // componentDidUpdate(param, this.props){
 
-    // }
     
 
     
@@ -82,8 +66,8 @@ class Dashboard extends Component {
                             return(
                                 <Product {...item} 
                                     key={item.id}
-                                    deleteProduct={this.deleteProduct}    
-                                
+                                    deleteProduct={this.deleteProduct}  
+                                    editItem={()=>{this.props.selectItem(item.id)}} 
                                 />
                             )
 

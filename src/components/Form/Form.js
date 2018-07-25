@@ -30,30 +30,26 @@ class Form extends Component {
         
         this.state = {
             ...inputProperties,
-            inventoryList: props.getProducts,
-                // [{
-                //     url: 'https://ae01.alicdn.com/kf/HTB1ARxPHVXXXXcLXpXXq6xXFXXX9/Devil-May-Cry-V-Cosplay-Dante-Ebony-Ivory.jpg',
-                //     name: 'Ebony & Ivory',
-                //     price: '$50,000,000,000'
-                // },
-                // {
-                //     url: 'https://vignette.wikia.nocookie.net/devilmaycry/images/f/fe/BlueRose.jpg/revision/latest?cb=20080424220315',
-                //     name: 'Blue Rose',
-                //     price: '$50,000,000',
-                // },
-                // {
-                //     url: 'https://vignette.wikia.nocookie.net/devilmaycry/images/2/2b/Untitledrebellion.png/revision/latest?cb=20131029230616',
-                //     name: 'Rebellion',
-                //     price: '$100,000,000,000'
-                // }],
-              
+            inventoryList: props.getProducts,              
             items: [ ],
             product_url: '',
             product_name: '',
             product_price: '',
+            selectItem: props.selectItem,
+            editItem: props.editItem,
+            product_id: 0,
         };
-    }
 
+        this.baseState = this.state;
+    }
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            product_id: nextProps.formInfo.id,
+            product_url: nextProps.formInfo.product_url,
+            product_name: nextProps.formInfo.product_name,
+            product_price: nextProps.formInfo.product_price,
+        })
+    }
     
     handleChange(e, name) {
         const value = e.target.value;
@@ -68,31 +64,56 @@ class Form extends Component {
             }
         }, {});
     }
-    cancelClick(){
-        this.setState(this.initialState);
+
+    resetForm(e){
+        // e.preventDefault();
+        this.setState(this.baseState)
+    }
+
+    cancelSubmit(e){
+        e.preventDefault();
+        this.resetForm();
     }
 
     handleSubmit(e) {
+        debugger
         e.preventDefault();
-        const {product_url, product_name, product_price} = this.state;
-        const newProduct = {product_url, product_name, product_price};
-
+        const {product_id, product_url, product_name, product_price} = this.state;
+        const newProduct = {product_id,product_url, product_name, product_price};
         if(this.props.onSubmit){
             this.props.onSubmit(e, newProduct)
         }
-
-        
-        return axios
-        .post('/api/products', newProduct)
-        .then(response => {
-                this.props.getProducts()
-                this.setState(this.refreshState())
+        if(this.state.product_id > 0){
+            axios.put('/api/products/' + this.state.id, newProduct)
+            .then(response => {
+                this.props.getInventory()
             })
+            .then(() => 
+                this.props.getProducts())
+            .catch(err => {
+                console.warn("Product could not be updated", err)
+            })
+        }else{
+            axios.post('/api/products', newProduct)
+            .then(response => {
+                    this.props.getInventory()
+                    this.props.getProducts()
+                    this.setState(this.refreshState())
+                })
             .catch(err => {
                 console.warn('Could not add product', err);
             })
+        }
 
     }
+
+
+    // componentDidUpdate(prevProps, prevState){
+    //     if (prevProps.data !== this.props.data){
+    //         this.setState(this.props.data)};
+    // }
+
+
 
     
     
@@ -120,11 +141,6 @@ class Form extends Component {
         return(
             <div>
                 <form className="product-form">
-                    {/* <div className="inventory">
-                        <img src={this.state.inventoryList.url} />
-                        <br />{this.state.inventoryList.name}
-                        <br />{this.state.inventoryList.price}
-                    </div> */}
 
                     <div className='input-box'>
                         <div className='image-preview'>
@@ -139,9 +155,9 @@ class Form extends Component {
                         <button 
                             type='submit'
                             onClick={e => this.handleSubmit(e)}
-                        >Add to Inventory</button>
+                        >{this.props.formInfo.buttonText}</button>
                         <button 
-                            onClick={e => this.cancelClick(e)}
+                            onClick={e => this.cancelSubmit(e)}
                         >Cancel</button>
                     </div>
                 </form>

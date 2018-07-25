@@ -20,33 +20,23 @@ class App extends Component {
     super(props)
 
     this.state = {
-      inventoryList: [
-        // {
-        //     url: 'https://ae01.alicdn.com/kf/HTB1ARxPHVXXXXcLXpXXq6xXFXXX9/Devil-May-Cry-V-Cosplay-Dante-Ebony-Ivory.jpg',
-        //     name: 'Ebony & Ivory',
-        //     price: '$50,000,000,000'
-        // },
-        // {
-        //     url: 'https://vignette.wikia.nocookie.net/devilmaycry/images/f/fe/BlueRose.jpg/revision/latest?cb=20080424220315',
-        //     name: 'Blue Rose',
-        //     price: '$5,000,000',
-        // },
-        // {
-        //     url: 'https://vignette.wikia.nocookie.net/devilmaycry/images/2/2b/Untitledrebellion.png/revision/latest?cb=20131029230616',
-        //     name: 'Rebellion',
-        //     price: '$100,000,000,000'
-        // }
-      ]
+      inventoryList:[],
+      formInfo:{
+        product_id: 0,
+        product_url: '',
+        product_name:'',
+        product_price:'',
+        buttonText:'Add to Inventory'
+      }
     }
-
     this.getInventory = this.getInventory.bind(this);
-
-
     // this.props = this.state.inventoryList;
+    this.selectItem = this.selectItem.bind(this)
   }
   componentWillMount(){
     this.getInventory()
   }
+
 
   handleSubmit(e){
     e.preventDefault();
@@ -60,10 +50,22 @@ class App extends Component {
 
   getInventory(){
     axios
-      .get('/api/inventory')
+      .get('/api/products')
       .then(response => {
         this.setState({
           inventoryList: response.data,
+        });
+      });
+  }
+
+  selectItem(id){
+    debugger
+    axios
+      .get(`/api/products/${id}`)
+      .then(response => {
+        response.data.buttonText = 'Save Changes'
+        this.setState({
+          formInfo: response.data,
         });
       });
   }
@@ -76,8 +78,14 @@ class App extends Component {
     return (
       <div className="App">
           <Header />
-          <Dashboard inventoryList={this.state.inventoryList} getProducts={this.getInventory}/>
-          <Form getProducts={this.getInventory} />
+          <Dashboard 
+            selectItem={this.selectItem} 
+            inventoryList={this.state.inventoryList} 
+            getProducts={this.getInventory}/>
+          <Form 
+            getInventory ={this.getInventory}
+            getProducts={this.getInventory} 
+            formInfo={this.state.formInfo} />
       </div>
     );
   }
