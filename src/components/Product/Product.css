@@ -9,5 +9,9 @@
 }
 
 .product-button {
-    background-color: #3ad886
+    background-color: #3ad886;
+    max-width: 90px;
+    height: 45px;
+    border-radius: 4px;
+    font-size: 15px;
 }

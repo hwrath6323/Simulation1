@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import './Form.css'
 import axios from 'axios';
 
+import noimage from '/Users/hwrathall6323/Documents/DevMountain/Projects/simulation-1/shelfie/src/no-camera.png';
+
 class Form extends Component {
 
     
@@ -64,6 +66,13 @@ class Form extends Component {
             }
         }, {});
     }
+
+    // handleImage(e, name){
+    //     const value = e.target.value
+
+    //     this.setState({[name]: value})
+    // }
+
 
     resetForm(e){
         // e.preventDefault();
@@ -136,7 +145,12 @@ class Form extends Component {
                 </div>
             ));
 
-            // const inventoryList = this.props.inventoryList;
+        let url;
+        if(this.state.product_url){
+            url = this.state.product_url
+        // }else{
+        //     return {noimage}
+        }
 
         return(
             <div>
@@ -145,8 +159,8 @@ class Form extends Component {
                     <div className='input-box'>
                         <div className='image-preview'>
                             <img 
-                                src="http://icons.iconarchive.com/icons/icons8/windows-8/512/City-No-Camera-icon.png"
                                 alt="Upload product"    
+                                src={url}
                             />
                         </div>
 

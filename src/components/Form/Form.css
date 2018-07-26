@@ -12,14 +12,19 @@ form {
 
 .input-box {
     background-color: #3AD886;
-    width: 265px;
-    height: 350px;
+    width: 325px;
+    height: 500px;
     border-radius: 4px;
     margin: 10px;
-    padding: 3px;
+    padding: 15px;
     font-size: 13px;
     float: right;
+    position: fixed;
+    right: 5px;
+    top: 90px;
+    justify-content: center;
 }
+
 
 input {
     margin: 5px;
@@ -27,19 +32,25 @@ input {
     width: 200px;
     height: 15px;
     font-size: 12px;
+    padding: 5px;
+    
 }
 
 button {
     background-color: #ED6B5A;
     color: black;
     margin: 20px;
-    font-size: 11px;
+    padding: 10px;
+    font-size: 17px;
+    border-radius: 6px;
+    border: none;
 }
 
 img {
     width: auto;
     height: auto;
-    max-width: 125px;
+    max-width: 165px;
+    max-height: 200px;
     margin: 20px 10px;
 
 }
